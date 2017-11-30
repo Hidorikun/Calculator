@@ -1,16 +1,13 @@
 package Controller;
 
-import Model.Operations;
+import Util.ExpressionEvaluator;
 import View.NormalView;
 import java.awt.event.*;
 
 public class NormalController {
     private NormalView normalView;
-    private Operations operations;
-    private int equaled = 0;
 
-    public NormalController(NormalView normalView, Operations operations){
-        this.operations = operations;
+    public NormalController(NormalView normalView){
         this.normalView = normalView;
 
         this.normalView.actButon1(new ActButon1());
@@ -22,7 +19,7 @@ public class NormalController {
         this.normalView.actButon7(new ActButon7());
         this.normalView.actButon8(new ActButon8());
         this.normalView.actButon9(new ActButon9());
-        this.normalView.actEgal(new ActEgal());
+        this.normalView.actEgal(new ActEqual());
         this.normalView.actButonClear(new ActButonClear());
         this.normalView.actAdunare(new ActAdunare());
         this.normalView.actScadere(new ActScadere());
@@ -30,44 +27,36 @@ public class NormalController {
         this.normalView.actImpartire(new ActImpartire());
         this.normalView.actBack(new ActBack());
         this.normalView.actButon0(new ActButon0());
+        this.normalView.textField(new TextField());
     }
 
     private void computeResult(){
-        if (equaled == 0){
-
-            String aux = normalView.getTextField();
-            if (aux.isEmpty())
-                aux = "0";
-
-            if (normalView.getResultLabel().equals("")){
-                operations.setResult(Integer.parseInt(normalView.getTextField()));
-
-            }else if (normalView.getResultLabel().endsWith("-")){
-                operations.setResult(operations.getScadere(operations.getResult(), Integer.parseInt(aux)));
-
-            }else if (normalView.getResultLabel().endsWith("+")){
-                operations.setResult(operations.getAdunare(operations.getResult(), Integer.parseInt(aux)));
-
-            }else if (normalView.getResultLabel().endsWith("*")){
-                operations.setResult(operations.getInmultire(operations.getResult(), Integer.parseInt(aux)));
-
-            }else if (normalView.getResultLabel().endsWith("/")){
-                if (aux.equals("0")) aux = "1";
-                operations.setResult(operations.getDiv(operations.getResult(), Integer.parseInt(aux)));
-            }else{
-                operations.setResult(Integer.parseInt(aux));
-            }
-
-        }else{
-            normalView.setResultLabel("");
-            operations.setResult(Integer.parseInt(normalView.getTextField()));
-            equaled = 0;
-        }
+        normalView.setTextField(String.valueOf(ExpressionEvaluator.evaluate(normalView.getResultLabel())));
     }
 
+    private void transferExpression(Character operation){
+        if (normalView.getResultLabel().matches(".*[-+/*]"))
+            normalView.setResultLabel(normalView.getResultLabel() + " " + normalView.getTextField() + " " + operation);
+        else
+            normalView.setResultLabel(normalView.getTextField() + " " + operation);
+    }
+
+    private void transferExpressionWithBrackets(Character operation){
+        if (normalView.getResultLabel().matches(".*[-+/*]"))
+            normalView.setResultLabel("( " + normalView.getResultLabel() + " " + normalView.getTextField() + ") " + operation);
+        else
+            normalView.setResultLabel(normalView.getTextField() + " " + operation);
+    }
+
+    private void clear(){
+        normalView.setTextField("");
+        normalView.setResultLabel("");
+    }
     class ActButon0 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
 
@@ -78,6 +67,8 @@ public class NormalController {
     class ActButon1 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
 
@@ -88,6 +79,8 @@ public class NormalController {
     class ActButon2 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "2");
@@ -97,6 +90,8 @@ public class NormalController {
     class ActButon3 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "3");
@@ -106,6 +101,8 @@ public class NormalController {
     class ActButon4 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "4");
@@ -115,6 +112,8 @@ public class NormalController {
     class ActButon5 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "5");
@@ -124,6 +123,8 @@ public class NormalController {
     class ActButon6 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "6");
@@ -133,6 +134,8 @@ public class NormalController {
     class ActButon7 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "7");
@@ -142,6 +145,8 @@ public class NormalController {
     class ActButon8 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "8");
@@ -151,6 +156,8 @@ public class NormalController {
     class ActButon9 implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            if (normalView.getResultLabel().endsWith("="))
+                clear();
             if (normalView.getTextField().equals("0"))
                 normalView.setTextField("");
             normalView.setTextField(normalView.getTextField() + "9");
@@ -158,32 +165,25 @@ public class NormalController {
     }
 
 
-    class ActEgal implements ActionListener{
+    class ActEqual implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
+            transferExpression('=');
             computeResult();
-            normalView.setResultLabel(normalView.getResultLabel() + normalView.getTextField());
-            normalView.setTextField(String.valueOf(operations.getResult()));
-            equaled = 1;
-
         }
     }
 
     class ActButonClear implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            normalView.setTextField("0");
-            normalView.setResultLabel("");
-            operations.setResult(0);
-            equaled = 0;
+            clear();
         }
     }
 
     class ActAdunare implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            computeResult();
-            normalView.setResultLabel(normalView.getResultLabel() + " " +  normalView.getTextField() + "  +");
+            transferExpression('+');
             normalView.setTextField("");
         }
     }
@@ -191,8 +191,7 @@ public class NormalController {
     class ActScadere implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            computeResult();
-            normalView.setResultLabel(normalView.getResultLabel() + " " +  normalView.getTextField() + "  -");
+            transferExpression('-');
             normalView.setTextField("");
         }
     }
@@ -200,8 +199,7 @@ public class NormalController {
     class ActInmultire implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            computeResult();
-            normalView.setResultLabel("(" +normalView.getResultLabel() + " " +  normalView.getTextField() + " ) *");
+            transferExpressionWithBrackets('*');
             normalView.setTextField("");
         }
     }
@@ -209,8 +207,7 @@ public class NormalController {
     class ActImpartire implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
-            computeResult();
-            normalView.setResultLabel("(" + normalView.getResultLabel() + " " +  normalView.getTextField() + " ) /");
+            transferExpressionWithBrackets('/');
             normalView.setTextField("");
         }
     }
@@ -222,8 +219,30 @@ public class NormalController {
             if (aux.length() > 0){
                 aux = aux.substring(0, aux.length()-1);
             }
-            if (aux.equals("")) aux = "0";
+            if (aux.equals("")) aux = "";
             normalView.setTextField(aux);
+        }
+    }
+
+    class TextField implements KeyListener{
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int key = e.getKeyCode();
+            if (key == KeyEvent.VK_ENTER) {
+                transferExpression('=');
+                computeResult();
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+
         }
     }
 }

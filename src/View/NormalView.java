@@ -29,8 +29,8 @@ public class NormalView extends JPanel {
     public NormalView() {
         //declare components
         textField = new JTextField (20);
-        textField.setEditable(false);
-        textField.setText("0");
+        textField.setEditable(true);
+        textField.setText("");
         resultLabel = new JLabel ("");
         buton0 = new JButton ("0");
         buton1 = new JButton ("1");
@@ -99,6 +99,9 @@ public class NormalView extends JPanel {
         backButton.setBounds(0, 230, 75, 27);
     }
 
+
+    public void textField(KeyListener keyListener) { textField.addKeyListener(keyListener);}
+
     public void actButon0(ActionListener cal){
         buton0.addActionListener(cal);
     }
@@ -111,9 +114,7 @@ public class NormalView extends JPanel {
         buton2.addActionListener(cal);
     }
 
-    public void actButon3(ActionListener cal){
-        buton3.addActionListener(cal);
-    }
+    public void actButon3(ActionListener cal){ buton3.addActionListener(cal); }
 
     public void actButon4(ActionListener cal){
         buton4.addActionListener(cal);
@@ -179,11 +180,10 @@ public class NormalView extends JPanel {
         textField.setText(s);
     }
 
-    public String getResultLabel(){
-        return resultLabel.getText();
-    }
+    public String getResultLabel(){ return resultLabel.getText(); }
 
     public void setResultLabel(String s){
         resultLabel.setText(s);
     }
+
 }
